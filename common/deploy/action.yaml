@@ -1,0 +1,12 @@
+name: aws
+author: ziro
+description: 'Use aws module in github action'
+inputs:
+  AWS_REGION:
+    description: 'set aws region'
+    required: true
+    default: 'ap-northeast-2'
+  AWS_ROLE_TO_ASSUME:
+    description: 'set aws role to assume'
+    required: true
+    default: 'GithubActions'

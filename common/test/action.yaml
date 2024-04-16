@@ -1,0 +1,37 @@
+name: test
+author: ziro
+description: 'Use test module in github action'
+inputs:
+  NODE_VERSION:
+    description: 'set node version'
+    required: true
+    default: '18'
+  WORKING_DIRECTORY:
+    description: 'set working directory'
+    required: true
+    default: 'my-app'
+
+runs:
+  using: "composite"
+  steps:
+  - name: setup-node
+    uses: actions/setup-node@v3
+    with:
+      node-versions: ${{ inputs.NODE_VERSION }}
+  - name: Cache Node.js modules
+    uses: actions/cache@v3
+    with:
+      path: ~/.npm
+      key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')}}
+      restore-keys: |
+        ${{ runner.os }}-node-
+  - name: Install depedencies
+    shell: bash
+    run: |
+      cd ${{ inputs.WORKING_DIRECTORY }}
+      npm ci
+  - name: npm build
+    shell: bash
+    run: |
+      cd ${{ inputs.WORKING_DIRECTORY }}
+      npm run build
